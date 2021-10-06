@@ -10,7 +10,7 @@ display = (data) => {
             <div class="pokemon">
                 <div class="front" style="z-index:${overlayIndex}">
                     <div style="padding: 5px 15px; ">
-                        <h1>${pokemon.name} <span> <button class="btn del" onclick="deletepokemon(${pokemon._id})" >Delete</button></span></h1>
+                        <h1>${pokemon.name} <span> <button class="btn del" onclick="deletepokemon('${pokemon._id}')" >Delete</button></span></h1>
                         <p>${pokemon.type}</p>
                     </div>
 
@@ -46,7 +46,7 @@ display = (data) => {
 
         overlayIndex--;
     })
-    console.log(pokeString);
+    // console.log(pokeString);
     document.getElementById('pokemons').innerHTML = pokeString;
 
 }
@@ -93,6 +93,7 @@ addPokemon = () => {
             console.log(data);
             display(pokemons);
             document.getElementById("form").reset();
+            message("Pokemon Created");
 
         })
         .catch((err) => {
@@ -102,6 +103,13 @@ addPokemon = () => {
 
     }
 
+}
+message=(data)=>{
+document.getElementById("message").style.display="block"; 
+document.getElementById("message").innerText=data;
+setTimeout(()=>{
+    document.getElementById("message").style.display="none";    
+},5000);
 }
 deletepokemon=(id)=>{
     console.log(id);
@@ -113,8 +121,14 @@ deletepokemon=(id)=>{
         })
         .then((data) => {
             console.log(data);
+
+            let index=pokemons.findIndex((val)=>{
+                return val._id==id;
+            })
+             pokemons.splice(index,1);
             display(pokemons);
-            
+          
+            message("Pokemon Deleted");
 
         })
         .catch((err) => {
